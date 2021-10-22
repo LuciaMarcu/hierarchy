@@ -1,4 +1,4 @@
-def pick_str  
+  def pick_str  
     gets.chomp    
   end
   
@@ -19,9 +19,38 @@ def pick_str
     end
     
   end
+
+  def parse_str(sub_str)
+    sub_str = sub_str.gsub(/[\s,]/, '')
+    str_array = []
+    balance = 0
+    i = -1
+    l = sub_str.length - 1 
+    for j in 0..l
+        if balance == 0
+            i += 1
+            str_array.push("")
+        end      
+      
+        if sub_str[j] == "("
+            balance += 1      
+                             
+        elsif sub_str[j] == ")"
+            balance -= 1            
+        end
+        
+        str_array[i] << sub_str[j]        
+
+    end
+
+    str_array
+  end
+
+
+  end  
   
-     
   
-  str = pick_str
-  get_name(str)
-  get_sub(str)
+  initial_str = pick_str
+  get_name(initial_str)
+  sub_str = get_sub(initial_str)
+  parse_str(sub_str)
