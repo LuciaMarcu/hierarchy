@@ -2,23 +2,42 @@ require_relative 'parser_str.rb'
 require_relative 'employee.rb'
 
 def construct_tree(entry)
-    boss = Employee.new
-    boss.name = ParserStr.get_name(entry)
-    p boss.name   
-    boss_body = ParserStr.get_sub(entry)   
-    child_arr = ParserStr.parse_str(boss_body)
+    employee = Employee.new
+    employee.name = ParserStr.get_name(entry)      
+    employee_body = ParserStr.get_sub(entry)   
+    child_arr = ParserStr.parse_str(employee_body)
    
       child_arr.each do |str|
-        subx = construct_tree(str)
-        boss.subordonates.push(subx)
+        sub = construct_tree(str)
+        employee.subordonates.push(sub)
+    end   
+    return employee
+end
+
+def compose_stringtree(employee)    
+    tree_str= ""
+    tree_str.concat(%q[("]).concat(employee.name).concat(%q["])
+    if employee.subordonates.length > 0
+        tree_str.concat(", ")
     end
-    boss
+    
+
+    employee.subordonates.each do |sub|
+        tree_str.concat(compose_stringtree(sub)).concat(", ")
+    end
+
+    if employee.subordonates.length > 0
+        tree_str = tree_str.slice(0..-3)
+    end   
+    tree_str.concat(")")
+    return tree_str
 end
 
 
 entry = ParserStr.pick_str
-construct_tree(entry)
-
+boss = construct_tree(entry)
+str = compose_stringtree(boss)
+puts str
 
 
 
