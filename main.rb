@@ -14,12 +14,14 @@ def construct_tree(entry)
     return employee
 end
 
-def compose_stringtree(employee)    
+def compose_stringtree(employee)     
     tree_str= ""
     tree_str.concat(%q[("]).concat(employee.name).concat(%q["])
     if employee.subordonates.length > 0
         tree_str.concat(", ")
     end
+
+    employee.subordonates = employee.subordonates.reject{|e| e.name == "Unavailable"}        
     
 
     employee.subordonates.each do |sub|
